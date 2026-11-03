@@ -13,6 +13,7 @@ from .common import KST, iso, load, now, parse_iso, save, today
 
 CATEGORIES = ["broadcast", "vote", "award", "video", "appearance", "chart", "popup"]
 MAX_PER_RUN = 4
+VAPID_SUB = "https://hkseong.github.io"  # 푸시 서비스에 알리는 연락처 (호스트만 허용됨)
 
 
 # ---------- alert bookkeeping ----------
@@ -160,7 +161,7 @@ def send(sub: dict, payload: dict) -> bool:
     try:
         webpush(subscription_info=sub["subscription"], data=json.dumps(payload, ensure_ascii=False),
                 vapid_private_key=os.environ["VAPID_PRIVATE_KEY"],
-                vapid_claims={"sub": "https://github.com/" + config.REPO}, ttl=6 * 3600)
+                vapid_claims={"sub": VAPID_SUB}, ttl=6 * 3600)
     except WebPushException as e:
         code = e.response.status_code if e.response is not None else None
         if code in (404, 410):
