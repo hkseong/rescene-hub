@@ -55,14 +55,17 @@ function span(e) {
 const memberMatch = (list, strict) => ui.member === "전체" || (list || []).includes(ui.member) || (!strict && (!list || !list.length));
 
 // ---------- data ----------
-async function loadAll() {
+// 큰 파일(videos)은 따로 기다릴 수 있게 Promise를 돌려준다.
+function loadAll() {
   const bucket = Math.floor(Date.now() / 120000);
-  await Promise.all(FILES.map(async (f) => {
+  const jobs = Object.fromEntries(FILES.map((f) => [f, (async () => {
     try {
       const r = await fetch(`${CFG.dataBase}${f}.json?v=${bucket}`, { cache: "no-cache" });
       D[f] = r.ok ? await r.json() : null;
     } catch (e) { D[f] = null; }
-  }));
+  })()]));
+  const small = Promise.all(FILES.filter((f) => f !== "videos").map((f) => jobs[f]));
+  return { small, all: Promise.all(Object.values(jobs)) };
 }
 
 function applyTheme() {
@@ -418,15 +421,19 @@ $("#settings").addEventListener("click", (ev) => { if (ev.target === $("#setting
 // ---------- boot ----------
 (async function boot() {
   if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
-  await loadAll();
+  const first = loadAll();
+  await first.small;
+  D.videos = D.videos || { items: [] };
   applyTheme();
+  render();
+  await first.all;
   render();
   // 데이터가 바뀌었을 때만 다시 그린다 (스크롤 위치 유지)
   const stamp = () => FILES.map((f) => D[f]?.updated || "").join("|");
   setInterval(async () => {
     if (document.visibilityState !== "visible" || $("#settings").open) return;
     const before = stamp();
-    await loadAll();
+    await loadAll().all;
     if (stamp() !== before) { const y = window.scrollY; applyTheme(); render(); window.scrollTo(0, y); }
   }, 5 * 60 * 1000);
 })();
