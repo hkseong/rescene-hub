@@ -59,6 +59,14 @@ jobs:
           git add -A data
           git commit -q -m "data snapshot $(date -u +%FT%TZ)"
           git push -f origin snapshot:data
+      - name: Alert owner if the runner itself broke
+        if: failure()
+        env:
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+        run: |
+          curl -s -H "Title: rescene-hub collect workflow failed" -H "Tags: rotating_light" \
+            -H "Click: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+            -d "수집 워크플로 자체가 실패했습니다. 로그를 확인해 주세요." "https://ntfy.sh/$NTFY_TOPIC"
       - name: Keepalive (cron은 60일간 활동이 없으면 꺼짐)
         run: |
           last=$(git log -1 --format=%ct)

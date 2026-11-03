@@ -54,7 +54,7 @@ def register(alerts: list[dict]) -> list[dict]:
         keys.add(a["key"])
         fresh.append(a)
     log["items"] = (fresh[::-1] + log["items"])[:300]
-    log["keys"] = list(keys)[-3000:]
+    log["keys"] = (log["keys"] + [a["key"] for a in fresh])[-5000:]  # 오래된 것부터 버림
     log["updated"] = iso()
     save("alerts.json", log)
     return fresh
