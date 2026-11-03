@@ -56,7 +56,7 @@ jobs:
 
       - name: Claude fixes the collector
         run: |
-          claude -p --model claude-opus-5-5 --dangerously-skip-permissions --max-turns 80 "$(cat <<EOF
+          claude -p --model claude-opus-5-5 --dangerously-skip-permissions "$(cat <<EOF
           You are maintaining rescene-hub, an automated fan site for the K-pop group RESCENE.
           The collector job '${{ steps.job.outputs.name }}' has been failing. The GitHub issue body (with the error log) is in /tmp/issue.md.
 
