@@ -1,0 +1,16 @@
+{
+  "name": "RESCENE HUB",
+  "short_name": "리센느 허브",
+  "description": "리센느 활동 정보 자동 모아보기",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F5F4F8",
+  "theme_color": "#ECE9F3",
+  "lang": "ko",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

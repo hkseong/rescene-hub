@@ -1,0 +1,108 @@
+name: repair
+# 수집기 고장 이슈에 저장소 소유자가 "/fix" 댓글을 달면 Claude가 고친다.
+# 테스트 + 실제 사이트 대상 스모크 수집이 모두 통과해야 main에 반영된다.
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: repair-${{ github.event.issue.number }}
+  cancel-in-progress: false
+
+jobs:
+  repair:
+    if: >-
+      startsWith(github.event.comment.body, '/fix') &&
+      github.event.comment.user.login == github.repository_owner &&
+      contains(github.event.issue.labels.*.name, 'collector-broken')
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+      VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
+      WORKER_ADMIN_TOKEN: ${{ secrets.WORKER_ADMIN_TOKEN }}
+      WORKER_URL: ${{ vars.WORKER_URL }}
+      NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      ISSUE: ${{ github.event.issue.number }}
+      DATA_DIR: ${{ github.workspace }}/databranch/data
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: data
+          path: databranch
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: pip install -r requirements.txt && npm install -g @anthropic-ai/claude-code
+
+      - name: Identify broken job
+        id: job
+        run: |
+          JOB=$(gh issue view "$ISSUE" --json body -q .body | grep -oE 'job:[a-z_]+' | head -1 | cut -d: -f2)
+          echo "name=$JOB" >> "$GITHUB_OUTPUT"
+          gh issue view "$ISSUE" --json body -q .body > /tmp/issue.md
+          gh issue comment "$ISSUE" --body "🔧 수리를 시작합니다 (\`$JOB\`). [진행 로그](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})"
+
+      - name: Claude fixes the collector
+        run: |
+          claude -p --model claude-opus-5-5 --dangerously-skip-permissions --max-turns 80 "$(cat <<EOF
+          You are maintaining rescene-hub, an automated fan site for the K-pop group RESCENE.
+          The collector job '${{ steps.job.outputs.name }}' has been failing. The GitHub issue body (with the error log) is in /tmp/issue.md.
+
+          Goal: make this job work again against the live source, with the smallest correct change.
+          - Code lives in collectors/ (run.py maps job names to functions). Tests in tests/, saved pages in tests/fixtures/.
+          - Reproduce with: python -m collectors.run --only ${{ steps.job.outputs.name }} --smoke
+          - If a website changed its HTML/format, download the current page into the matching tests/fixtures file
+            (use the same User-Agent as collectors/common.py) and update the parser so tests pass on the new fixture.
+          - If the failure is a transient outage or quota problem that code cannot fix, change nothing and explain why in /tmp/repair-notes.md.
+          - Keep the strict verification rules in collectors/verify.py unchanged.
+          - Finish with: python -m pytest -q  and  python -m collectors.run --only ${{ steps.job.outputs.name }} --smoke  both passing.
+          - Write a short Korean summary of what you changed and why to /tmp/repair-notes.md. Do not commit; the workflow commits.
+          EOF
+          )"
+
+      - name: Verify
+        id: verify
+        run: |
+          python -m pytest -q
+          python -m collectors.run --only ${{ steps.job.outputs.name }} --smoke
+
+      - name: Ship
+        if: success()
+        run: |
+          git config user.name "rescene-hub-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A collectors tests
+          NOTES=$(cat /tmp/repair-notes.md 2>/dev/null || echo "변경 내용 기록 없음")
+          if git diff --cached --quiet; then
+            gh issue comment "$ISSUE" --body "ℹ️ 코드 변경 없이 스모크 수집이 통과했습니다 (일시적 장애였던 것으로 보입니다). 다음 정기 수집에서 정상이면 이슈가 자동으로 닫힙니다.
+
+          $NOTES"
+          else
+            git commit -q -m "fix(${{ steps.job.outputs.name }}): automated repair for #$ISSUE"
+            git push
+            gh issue comment "$ISSUE" --body "✅ 수리를 반영했습니다. 다음 정기 수집에서 정상 동작이 확인되면 이슈가 자동으로 닫힙니다.
+
+          $NOTES"
+          fi
+          python -m collectors.notify --admin "✅ 수리 완료: ${{ steps.job.outputs.name }}" "테스트와 실제 수집 검증을 통과해 반영했어요." "${{ github.server_url }}/${{ github.repository }}/issues/$ISSUE"
+
+      - name: Report failure
+        if: failure()
+        run: |
+          NOTES=$(cat /tmp/repair-notes.md 2>/dev/null || echo "")
+          gh issue comment "$ISSUE" --body "❌ 자동 수리가 검증을 통과하지 못해 반영하지 않았습니다. 다시 시도하려면 \`/fix\` 댓글을 다시 달아 주세요. [로그](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+
+          $NOTES"
+          python -m collectors.notify --admin "❌ 자동 수리 실패: ${{ steps.job.outputs.name }}" "검증을 통과하지 못해 반영하지 않았어요. 이슈를 확인해 주세요." "${{ github.server_url }}/${{ github.repository }}/issues/$ISSUE"

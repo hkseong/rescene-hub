@@ -1,0 +1,6 @@
+{
+  "name": "rescene-hub-worker",
+  "private": true,
+  "scripts": { "deploy": "wrangler deploy" },
+  "devDependencies": { "wrangler": "3.90.0" }
+}
