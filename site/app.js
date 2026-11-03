@@ -421,5 +421,12 @@ $("#settings").addEventListener("click", (ev) => { if (ev.target === $("#setting
   await loadAll();
   applyTheme();
   render();
-  setInterval(async () => { if (document.visibilityState === "visible") { await loadAll(); applyTheme(); render(); } }, 5 * 60 * 1000);
+  // 데이터가 바뀌었을 때만 다시 그린다 (스크롤 위치 유지)
+  const stamp = () => FILES.map((f) => D[f]?.updated || "").join("|");
+  setInterval(async () => {
+    if (document.visibilityState !== "visible" || $("#settings").open) return;
+    const before = stamp();
+    await loadAll();
+    if (stamp() !== before) { const y = window.scrollY; applyTheme(); render(); window.scrollTo(0, y); }
+  }, 5 * 60 * 1000);
 })();

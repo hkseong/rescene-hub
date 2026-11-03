@@ -113,13 +113,12 @@ async function data(env, name) {
   return r.ok ? r.json() : null;
 }
 
-function kakaoText(text, site) {
+function kakaoText(text) {
   return json({
     version: "2.0",
     template: {
       outputs: [{ simpleText: { text: text.slice(0, 990) } }],
-      quickReplies: KAKAO_MENU.map((m) => ({ label: m, action: "message", messageText: m })).concat(
-        site ? [] : []),
+      quickReplies: KAKAO_MENU.map((m) => ({ label: m, action: "message", messageText: m })),
     },
   });
 }
@@ -141,7 +140,7 @@ async function kakao(req, env) {
   } else if (key === "일정") {
     const ev = await data(env, "events");
     const up = ((ev && ev.events) || []).filter((e) => (e.end_date || e.date) >= today).slice(0, 8);
-    text = "📅 다가오는 일정\n" + (up.length ? up.map((e) => `• ${e.date.slice(5)} ${e.time || ""} ${e.title}`).join("\n") : "확인된 일정이 없어요");
+    text = "📅 다가오는 일정\n" + (up.length ? up.map((e) => `• ${e.date.slice(5)}${e.time ? " " + e.time : ""} ${e.title}`).join("\n") : "확인된 일정이 없어요");
   } else if (key === "앨범") {
     const a = await data(env, "albums");
     text = "💿 최근 앨범\n" + (((a && a.albums) || []).slice(0, 5).map((x) => `• ${x.title} (${x.type}, ${x.date})`).join("\n"));
@@ -150,7 +149,7 @@ async function kakao(req, env) {
     const todays = ((ev && ev.events) || []).filter((e) => e.date <= today && today <= (e.end_date || e.date));
     const top = ((c && c.realtime && c.realtime.entries) || [])[0];
     text = `☀️ 오늘의 리센느 (${today.slice(5)})\n` +
-      (todays.length ? todays.map((e) => `• ${e.time || ""} ${e.title}`).join("\n") : "• 오늘 확정된 일정 없음") +
+      (todays.length ? todays.map((e) => `• ${e.time ? e.time + " " : ""}${e.title}`).join("\n") : "• 오늘 확정된 일정 없음") +
       (top ? `\n• 멜론 실시간 최고 ${top.rank}위 '${top.title}'` : "");
   }
   return kakaoText(text + `\n\n더 보기: ${env.SITE_URL}`);
