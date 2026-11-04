@@ -95,7 +95,10 @@ def should_run(state: dict, new_articles: list) -> bool:
 def collect_events() -> list[dict]:
     new_articles = news.collect_news()
     if new_articles:
-        news.cluster_stories()
+        try:
+            news.cluster_stories()
+        except Exception as e:  # 묶기는 보기 좋게 하는 용도라 실패해도 일정 수집은 계속
+            print(f"  [news] 같은 소식 묶기 실패: {e}")
     store = load("events.json", {"events": [], "pending": []})
     first_run = "updated" not in store
     if not should_run(store, new_articles):

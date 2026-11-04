@@ -89,12 +89,12 @@ def cluster_stories() -> None:
     """최근 72시간 기사를 같은 소식끼리 묶어 story(대표 기사 id)를 붙인다. 화면에선 묶음당 한 줄."""
     data = load("news.json", {"articles": []})
     since = iso(now() - timedelta(hours=STORY_WINDOW_HOURS))
-    recent = [a for a in data["articles"] if not a.get("dup") and a["published_at"] >= since][:200]
+    recent = [a for a in data["articles"] if not a.get("dup") and a["published_at"] >= since][:150]
     if len(recent) < 2:
         return
     lines = "\n".join(f"{a['id']} | {a['title']}" for a in recent)
     out, _ = llm.ask_json(model=config.MODEL_CLASSIFY, system=STORY_SYSTEM, content=lines,
-                          schema=STORY_SCHEMA, purpose="news_stories", effort="low", max_tokens=8000)
+                          schema=STORY_SCHEMA, purpose="news_stories", effort="low", max_tokens=32000)
     apply_stories(recent, out["groups"])
     save("news.json", data)
 
