@@ -1,4 +1,4 @@
-const SHELL = "hub-shell-v1";
+const SHELL = "hub-shell-v2";
 const ASSETS = ["./", "index.html", "style.css", "app.js", "config.js", "manifest.webmanifest", "icons/icon-192.png"];
 
 self.addEventListener("install", (e) => {
