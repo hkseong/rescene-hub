@@ -82,7 +82,7 @@ STORY_SCHEMA = {
 STORY_SYSTEM = """리센느 관련 뉴스 제목 목록을 같은 사건·소식끼리 묶어라.
 - 같은 발표·행사·기록을 다룬 기사는 언론사나 표현이 달라도 한 묶음이다 (예: 디즈니 콜라보 발탁 기사 여러 건).
 - 주제만 비슷하고 사건이 다르면 나눈다 (예: 음원차트 1위 기사와 음악방송 1위 기사).
-- 혼자인 기사는 1개짜리 묶음으로. 모든 id가 정확히 한 번씩 나와야 한다."""
+- 2건 이상인 묶음만 출력한다. 혼자인 기사는 쓰지 마라. 한 id는 한 묶음에만."""
 
 
 def cluster_stories() -> None:
@@ -94,7 +94,7 @@ def cluster_stories() -> None:
         return
     lines = "\n".join(f"{a['id']} | {a['title']}" for a in recent)
     out, _ = llm.ask_json(model=config.MODEL_CLASSIFY, system=STORY_SYSTEM, content=lines,
-                          schema=STORY_SCHEMA, purpose="news_stories", effort="low", max_tokens=32000)
+                          schema=STORY_SCHEMA, purpose="news_stories", effort="low", max_tokens=16000)
     apply_stories(recent, out["groups"])
     save("news.json", data)
 
