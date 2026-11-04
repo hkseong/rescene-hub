@@ -4,6 +4,7 @@ from __future__ import annotations
 import json
 import os
 import sys
+from pathlib import Path
 from datetime import date, datetime, timedelta
 
 import requests
@@ -11,7 +12,9 @@ import requests
 from . import config
 from .common import KST, iso, load, now, parse_iso, save, today
 
-CATEGORIES = ["broadcast", "vote", "award", "video", "appearance", "chart", "popup"]
+CATEGORIES = ["broadcast", "vote", "award", "video", "appearance", "chart", "popup", "app"]
+DEFAULT_ON = {"app"}  # 따로 끄지 않으면 받는 실시간 알림
+CHANGELOG = Path(__file__).resolve().parent.parent / "site" / "changelog.json"
 MAX_PER_RUN = 4
 VAPID_SUB = "https://hkseong.github.io"  # 푸시 서비스에 알리는 연락처 (호스트만 허용됨)
 
@@ -137,6 +140,16 @@ def upcoming_days(t: datetime, within: int = 30) -> list[dict]:
 
 # ---------- delivery ----------
 
+def app_update_alerts() -> list[dict]:
+    """site/changelog.json의 최신 항목을 알림 하나로. register()가 키로 중복을 막아 버전마다 한 번만 간다."""
+    try:
+        latest = json.loads(CHANGELOG.read_text())[0]
+    except (OSError, ValueError, IndexError):
+        return []
+    return [{"key": f"app:{latest['version']}", "cat": "app", "title": f"✨ 업데이트: {latest['title']}",
+             "body": " · ".join(latest["notes"][:3]), "url": config.SITE_URL, "at": iso()}]
+
+
 def subscribers() -> list[dict]:
     url, token = os.environ.get("WORKER_URL"), os.environ.get("WORKER_ADMIN_TOKEN")
     if not (url and token):
@@ -211,7 +224,7 @@ def dispatch(fresh: list[dict], t: datetime, dry_run: bool = False) -> dict:
     for s in subs:
         prefs = s.get("prefs", {})
         msgs = [d for k, d in digests if prefs.get(f"digest_{k}", True)]
-        mine = [a for a in fresh if prefs.get("realtime", {}).get(a["cat"], False)]
+        mine = [a for a in fresh if prefs.get("realtime", {}).get(a["cat"], a["cat"] in DEFAULT_ON)]
         if len(mine) > MAX_PER_RUN:
             msgs.append({"title": f"리센느 새 소식 {len(mine)}건", "body": "\n".join(a["title"] for a in mine[:6]),
                          "url": config.SITE_URL, "tag": "bundle"})

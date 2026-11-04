@@ -14,7 +14,7 @@ import tempfile
 import traceback
 from datetime import timedelta
 
-from . import config, events, health, llm, melon, notify, profile, theme, youtube
+from . import archive, config, events, health, llm, melon, notify, profile, theme, youtube
 from .common import iso, load, now, parse_iso, save
 
 JOBS = {
@@ -25,9 +25,10 @@ JOBS = {
     "youtube": youtube.collect_youtube,
     "appearances": youtube.collect_appearances,
     "events": events.collect_events,
+    "archive": archive.collect_archive,
     "profile": profile.collect_profile,
 }
-LLM_JOBS = {"events", "profile", "theme", "appearances"}
+LLM_JOBS = {"events", "archive", "profile", "theme", "appearances"}
 
 
 def interval(job: str) -> int:
@@ -102,7 +103,7 @@ def main(argv=None) -> int:
         save("state.json", state)
     if not args.no_notify:
         evs = load("events.json", {"events": []})["events"]
-        fresh = notify.register(alerts + notify.schedule_alerts(evs, now()))
+        fresh = notify.register(alerts + notify.schedule_alerts(evs, now()) + notify.app_update_alerts())
         try:
             print("[notify]", notify.dispatch(fresh, now()))
         except Exception:

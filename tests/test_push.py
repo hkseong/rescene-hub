@@ -82,3 +82,19 @@ def test_dispatch_respects_prefs(tmp_path, monkeypatch):
     got.clear()
     notify.dispatch([], datetime(2026, 11, 4, 9, 20, tzinfo=KST))
     assert got == []
+
+
+def test_app_update_goes_to_everyone_unless_turned_off(tmp_path, monkeypatch):
+    monkeypatch.setenv("DATA_DIR", str(tmp_path))
+    from datetime import datetime
+    from collectors.common import KST
+    [alert] = notify.app_update_alerts()
+    assert alert["cat"] == "app" and alert["key"].startswith("app:")
+    subs = [{"id": "a", "prefs": {"realtime": {}}}, {"id": "b", "prefs": {"realtime": {"app": False}}}]
+    got = []
+    monkeypatch.setattr(notify, "subscribers", lambda: subs)
+    monkeypatch.setattr(notify, "send", lambda s, p: got.append((s["id"], p["tag"])) or True)
+    monkeypatch.setattr(notify, "_remove", lambda ids: None)
+    notify.dispatch(notify.register([alert]), datetime(2026, 11, 4, 15, 0, tzinfo=KST))
+    assert got == [("a", alert["key"])]
+    assert notify.register(notify.app_update_alerts()) == []  # 같은 버전은 한 번만

@@ -153,3 +153,24 @@ details summary { cursor: pointer; color: var(--muted); font-size: 13px; padding
   .vcard img { width: 180px; }
   .vlist { grid-template-columns: 1fr; }
 }
+
+/* 상세 시트·지난 이력 토글 */
+.row.ev { cursor: pointer; }
+.row.ev:active { background: var(--soft); }
+.chev { color: var(--muted); font-size: 20px; line-height: 1; }
+.perk { font-size: 12px; color: var(--primary); font-weight: 500; margin-top: 2px; }
+p.perk { font-size: 14px; }
+.more-link { float: right; font-size: 12px; font-weight: 500; color: var(--primary); text-decoration: none; }
+h2 .more-link { margin-left: 8px; }
+.section-title small { font-weight: 400; }
+details.past { border-top: 1px solid var(--line); margin-top: 4px; }
+details.past summary { font-weight: 500; color: var(--primary); }
+details.past .month { font-size: 12px; font-weight: 700; color: var(--muted); padding: 10px 0 2px; }
+.row details summary { padding: 4px 0 0; font-size: 12px; }
+.row a.t { color: inherit; text-decoration: none; }
+a.sub { display: block; font-size: 12px; color: var(--muted); padding: 4px 0; text-decoration: none; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#detail-body { padding: 0 16px 24px; overflow-y: auto; }
+#detail-body .card h2 { margin-top: 0; }
+#detail-body .btn { display: inline-block; padding: 8px 14px; border-radius: 999px; background: var(--primary); color: var(--on-primary); text-decoration: none; font-weight: 700; font-size: 14px; }
+#detail-body .chip { margin: 0 6px 6px 0; }
+ul.notes { margin: 4px 0 0; padding-left: 18px; font-size: 13px; color: var(--muted); }

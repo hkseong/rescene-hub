@@ -15,6 +15,7 @@ function cleanPrefs(p = {}) {
   const cats = ["broadcast", "vote", "award", "video", "appearance", "chart", "popup"];
   const realtime = {};
   for (const c of cats) realtime[c] = !!(p.realtime && p.realtime[c]);
+  realtime.app = !(p.realtime && p.realtime.app === false); // 앱 업데이트 알림은 기본 켜짐
   return { digest_morning: p.digest_morning !== false, digest_evening: p.digest_evening !== false, realtime };
 }
 

@@ -8,7 +8,7 @@ from datetime import timedelta
 from email.utils import parsedate_to_datetime
 from urllib.parse import quote
 
-from . import config
+from . import config, llm
 from .common import KST, CollectorError, domain, http_get, iso, load, norm_title, now, save
 
 RSS = "https://news.google.com/rss/search?q={}+when:7d&hl=ko&gl=KR&ceid=KR:ko"
@@ -70,3 +70,45 @@ def collect_news() -> list[dict]:
     data["updated"] = iso()
     save("news.json", data)
     return new
+
+
+STORY_WINDOW_HOURS = 72
+STORY_SCHEMA = {
+    "type": "object",
+    "properties": {"groups": {"type": "array", "items": {"type": "array", "items": {"type": "string"}}}},
+    "required": ["groups"],
+    "additionalProperties": False,
+}
+STORY_SYSTEM = """리센느 관련 뉴스 제목 목록을 같은 사건·소식끼리 묶어라.
+- 같은 발표·행사·기록을 다룬 기사는 언론사나 표현이 달라도 한 묶음이다 (예: 디즈니 콜라보 발탁 기사 여러 건).
+- 주제만 비슷하고 사건이 다르면 나눈다 (예: 음원차트 1위 기사와 음악방송 1위 기사).
+- 혼자인 기사는 1개짜리 묶음으로. 모든 id가 정확히 한 번씩 나와야 한다."""
+
+
+def cluster_stories() -> None:
+    """최근 72시간 기사를 같은 소식끼리 묶어 story(대표 기사 id)를 붙인다. 화면에선 묶음당 한 줄."""
+    data = load("news.json", {"articles": []})
+    since = iso(now() - timedelta(hours=STORY_WINDOW_HOURS))
+    recent = [a for a in data["articles"] if not a.get("dup") and a["published_at"] >= since][:200]
+    if len(recent) < 2:
+        return
+    lines = "\n".join(f"{a['id']} | {a['title']}" for a in recent)
+    out, _ = llm.ask_json(model=config.MODEL_CLASSIFY, system=STORY_SYSTEM, content=lines,
+                          schema=STORY_SCHEMA, purpose="news_stories", effort="low", max_tokens=8000)
+    apply_stories(recent, out["groups"])
+    save("news.json", data)
+
+
+def apply_stories(recent: list[dict], groups: list[list[str]]) -> None:
+    by_id = {a["id"]: a for a in recent}
+    for a in recent:
+        a.pop("story", None)
+    for g in groups:
+        members = [by_id[i] for i in dict.fromkeys(g) if i in by_id and "story" not in by_id[i]]
+        if not members:
+            continue
+        head = max(members, key=lambda a: a["published_at"])["id"]  # 최신 기사가 대표
+        for a in members:
+            a["story"] = head
+    for a in recent:
+        a.setdefault("story", a["id"])  # 모델이 빠뜨린 기사는 단독으로

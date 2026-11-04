@@ -2,13 +2,14 @@
 const CFG = window.HUB_CONFIG;
 const MEMBERS = ["원이", "리브", "미나미", "메이", "제나"];
 const FILES = ["chart", "videos", "albums", "events", "votes", "members", "theme", "status", "news", "alerts", "usage"];
-const TYPE_LABEL = { broadcast: "방송", event: "행사", popup: "팝업", collab: "콜라보", goods: "굿즈", award: "1위·수상", vote: "투표", release: "발매" };
-const JOB_LABEL = { youtube: "유튜브 공식", appearances: "출연 영상", melon_chart: "멜론 차트", melon_albums: "앨범", melon_vote: "주간 인기상", events: "일정·뉴스", profile: "프로필", theme: "테마" };
+const TYPE_LABEL = { broadcast: "방송", event: "행사", popup: "팝업", collab: "콜라보", goods: "굿즈", ad: "광고", award: "1위·수상", vote: "투표", release: "발매" };
+const JOB_LABEL = { youtube: "유튜브 공식", appearances: "출연 영상", melon_chart: "멜론 차트", melon_albums: "앨범", melon_vote: "주간 인기상", events: "일정·뉴스", archive: "지난 이력", profile: "프로필", theme: "테마" };
 const RT_CATS = [
   ["broadcast", "오늘 방송·행사 (1~2시간 전)"], ["vote", "투표 순위 변동·마감 임박"], ["award", "음방 1위·수상"],
   ["video", "공식 채널 새 영상·조회수 돌파"], ["appearance", "타 채널 출연·무대 영상"], ["chart", "멜론 차트 진입·TOP10·1위"],
-  ["popup", "팝업·콜라보·굿즈 새 소식"],
+  ["popup", "팝업·콜라보·광고 새 소식"], ["app", "앱 업데이트 (새 기능 안내)"],
 ];
+const RT_DEFAULT_ON = new Set(["app"]);
 
 const D = {};
 const ui = {
@@ -132,13 +133,84 @@ function sourcesHtml(e) {
   return `<div class="src">출처: ${e.sources.slice(0, 4).map((s) => `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.publisher)}</a>`).join(", ")}</div>`;
 }
 function eventRow(e) {
-  const link = e.link || e.sources?.[0]?.url;
   const who = e.members?.length && e.members.length < 5 ? ` · ${e.members.join(", ")}` : "";
-  return `<div class="row"><div class="main">
+  return `<div class="row ev" data-ev="${esc(e.id)}" role="button" tabindex="0"><div class="main">
     <div><span class="tag">${esc(TYPE_LABEL[e.type] || e.type)}</span><span class="s">${esc(span(e))}${esc(e.place ? " · " + e.place : "")}${esc(who)}</span></div>
-    <div class="t">${link ? `<a href="${esc(link)}" target="_blank" rel="noopener">${esc(e.title)}</a>` : esc(e.title)}</div>
-    ${e.summary ? `<div class="s">${esc(e.summary)}</div>` : ""}${sourcesHtml(e)}</div></div>`;
+    <div class="t">${esc(e.title)}</div>
+    ${e.summary ? `<div class="s">${esc(e.summary)}</div>` : ""}${e.perk ? `<div class="perk">🎁 ${esc(e.perk)}</div>` : ""}</div><span class="chev" aria-hidden="true">›</span></div>`;
 }
+const isPast = (e, t) => (e.end_date || e.date) < t;
+// 진행 중: 기간이 있으면 기간 안, 시작일만 있으면 30일간
+function ongoing(evs, t, types) {
+  return evs.filter((e) => types.includes(e.type) && e.date <= t && (e.end_date ? e.end_date >= t : daysBetween(e.date, t) <= 30));
+}
+function pastToggle(list, label) {
+  if (!list.length) return "";
+  let h = `<details class="past"><summary>${esc(label)} ${list.length}개</summary>`;
+  let month = "";
+  for (const e of list) {
+    const m = e.date.slice(0, 7);
+    if (m !== month) { month = m; h += `<div class="month">${+m.slice(0, 4)}년 ${+m.slice(5)}월</div>`; }
+    h += eventRow(e);
+  }
+  return h + `</details>`;
+}
+const byDateDesc = (a, b) => b.date.localeCompare(a.date);
+
+// ---------- 상세 시트: 일정 하나와 관련된 뉴스·영상 ----------
+const STOP = new Set(["리센느", "rescene", "출연", "발매", "공개", "방송", "행사", "콜라보", "팝업", "미니", "앨범", "신곡", "컴백", "기념", "오픈", "진행", "예정", "스페셜", "with", "pulse", "그룹", "걸그룹", "멤버", "참석", "출시", "광고", "모델", "캠페인", "이벤트"]);
+const keywords = (text) => [...new Set((text.match(/[0-9A-Za-z가-힣]{2,}/g) || []).map((w) => w.toLowerCase()).filter((w) => !STOP.has(w)))];
+function related(e) {
+  const kws = keywords(`${e.title} ${e.place || ""}`);
+  const arts = (D.news?.articles || []).filter((a) => !a.dup);
+  const df = (k) => arts.filter((a) => a.title.toLowerCase().includes(k)).length;
+  const w = Object.fromEntries(kws.map((k) => [k, Math.log((arts.length + 1) / (df(k) + 1))]));
+  const score = (title) => kws.reduce((s, k) => s + (title.toLowerCase().includes(k) ? w[k] : 0), 0);
+  const refs = new Set((e.sources || []).map((s) => s.ref));
+  const rank = (list, get) => list.map((x) => [x, get(x)]).filter(([, s]) => s >= 2).sort((a, b) => b[1] - a[1]).map(([x]) => x);
+  return {
+    news: rank(arts, (a) => (refs.has(a.id) ? 99 : score(a.title))).slice(0, 8),
+    videos: rank(D.videos?.items || [], (v) => score(v.title)).slice(0, 6),
+  };
+}
+function openEvent(id) {
+  const e = (D.events?.events || []).find((x) => x.id === id);
+  if (!e) return;
+  const rel = related(e);
+  const link = e.link || e.sources?.[0]?.url;
+  const who = e.members?.length ? (e.members.length === 5 ? "리센느 전원" : e.members.join(", ")) : "";
+  $("#detail-title").textContent = TYPE_LABEL[e.type] || "일정";
+  $("#detail-body").innerHTML = `<section class="card">
+      <h2>${esc(e.title)}</h2>
+      <div class="s">${esc(span(e))}${esc(e.place ? " · " + e.place : "")}${esc(who ? " · " + who : "")}</div>
+      ${e.summary ? `<p>${esc(e.summary)}</p>` : ""}
+      ${e.perk ? `<p class="perk">🎁 ${esc(e.perk)}</p>` : ""}
+      ${link ? `<p><a class="btn" href="${esc(link)}" target="_blank" rel="noopener">원문 보기 →</a></p>` : ""}
+      <p><button class="chip" data-goto-day="${esc(e.date)}">📅 일정 탭 달력에서 보기</button>
+      ${e.members?.length && e.members.length < 5 ? e.members.map((m) => `<button class="chip" data-goto-member="${esc(m)}">${esc(m)} 소식 모아보기</button>`).join("") : ""}</p>
+      ${sourcesHtml(e)}</section>
+    <div class="section-title">관련 뉴스</div><section class="card">${rel.news.length ? rel.news.map(newsLink).join("") : `<div class="empty">관련 기사를 찾지 못했어요</div>`}</section>
+    <div class="section-title">관련 영상</div>${rel.videos.length ? `<div class="vlist">${rel.videos.map((v) => vcard(v)).join("")}</div>` : `<section class="card"><div class="empty">관련 영상을 찾지 못했어요</div></section>`}`;
+  $("#detail").showModal();
+  $("#detail-body").scrollTop = 0;
+}
+const newsLink = (a) => `<a class="row" href="${esc(a.link)}" target="_blank" rel="noopener"><div class="main"><div class="t">${esc(a.title)}</div><div class="s">${esc(a.publisher)} · ${ago(a.published_at)}</div></div></a>`;
+// 같은 소식(story)끼리 묶어 한 줄, 나머지는 펼쳐 보기
+function newsGroups(limit) {
+  const g = new Map();
+  for (const a of (D.news?.articles || []).filter((x) => !x.dup)) {
+    const k = a.story || a.id;
+    if (!g.has(k)) g.set(k, []);
+    g.get(k).push(a);
+  }
+  return [...g.values()].slice(0, limit);
+}
+function newsGroupRow([a, ...rest]) {
+  return `<div class="row"><div class="main"><a class="t" href="${esc(a.link)}" target="_blank" rel="noopener">${esc(a.title)}</a>
+    <div class="s">${esc(a.publisher)} · ${ago(a.published_at)}</div>
+    ${rest.length ? `<details><summary>같은 소식 ${rest.length}건 더</summary>${rest.map((x) => `<a class="sub" href="${esc(x.link)}" target="_blank" rel="noopener">${esc(x.publisher)} · ${esc(x.title)}</a>`).join("")}</details>` : ""}</div></div>`;
+}
+const more = (hash, label = "전체 보기") => `<a class="more-link" href="#${hash}">${label} ›</a>`;
 function vcard(v, horizontal) {
   const ms = v.milestone ? `<span class="tag alt">${fmtCount(v.milestone.target)}까지 D-${Math.ceil(v.milestone.eta_days)}</span>` : "";
   const grp = { official: "공식", wonee: "원이 채널", appearance: "출연", stage: "무대" }[v.group];
@@ -157,33 +229,39 @@ function viewToday() {
   const evs = events();
   const todays = evs.filter((e) => e.date <= t && t <= (e.end_date || e.date) && !["popup", "collab", "goods"].includes(e.type));
   const ann = anniversaries(t, 30);
-  const ongoing = evs.filter((e) => ["popup", "collab", "goods", "vote"].includes(e.type) && e.date <= t && (e.end_date ? e.end_date >= t : daysBetween(e.date, t) <= 30));
+  const now_on = ongoing(evs, t, ["popup", "collab", "goods", "vote"]).concat(evs.filter((e) => e.type === "ad" && e.perk && e.date <= t && e.end_date >= t));
   const upcoming = evs.filter((e) => e.date > t && e.date <= addDays(t, 14));
   const rt = D.chart?.realtime;
   const vids = (D.videos?.items || []).filter((v) => !v.short && memberMatch(v.members, true) && Date.now() - new Date(v.published_at) < 3 * 864e5).slice(0, 12);
-  const news = (D.news?.articles || []).filter((a) => !a.dup).slice(0, 5);
+  const news = newsGroups(5);
   const recent = (D.alerts?.items || []).filter((a) => Date.now() - new Date(a.at) < 864e5).slice(0, 6);
 
   let h = staleBanner(["melon_chart", "youtube", "events"]);
   h += `<section class="card"><h2>오늘 ${md(t)}(${dow(t)}) <small>${ann.filter((a) => !a.days).map((a) => "🎂 " + esc(a.title)).join(" ")}</small></h2>
     ${todays.length ? todays.map(eventRow).join("") : `<div class="empty">오늘 확정된 일정이 없어요</div>`}</section>`;
   if (rt?.entries?.length) {
-    h += `<section class="card"><h2>멜론 실시간 <small>${esc(rt.chart_date || "")} ${esc(rt.chart_hour || "")} · TOP100에 ${rt.entries.length}곡</small></h2>
+    h += `<section class="card"><h2>멜론 실시간 ${more("chart", "차트")}<small>${esc(rt.chart_date || "")} ${esc(rt.chart_hour || "")} · TOP100에 ${rt.entries.length}곡</small></h2>
       ${rt.entries.slice(0, 3).map((e) => `<a class="row" href="#chart"><div class="rank">${e.rank}${rankDelta(e.song_id)}</div><div class="main"><div class="t">${esc(e.title)}</div><div class="s">${esc(e.album)}</div></div>${sparkline(D.chart.history?.[e.song_id]?.points)}</a>`).join("")}</section>`;
   } else if (rt) {
     h += `<section class="card"><h2>멜론 실시간</h2><div class="empty">지금은 TOP100 밖이에요</div></section>`;
   }
   if (recent.length) {
-    h += `<section class="card"><h2>새 소식 <small>24시간</small></h2>${recent.map((a) => `<a class="row" href="${esc(a.url)}" target="_blank" rel="noopener"><div class="main"><div class="t">${esc(a.title)}</div><div class="s">${esc(a.body)} · ${ago(a.at)}</div></div></a>`).join("")}</section>`;
+    const evIds = new Set((D.events?.events || []).map((e) => e.id));
+    h += `<section class="card"><h2>새 소식 <small>24시간</small></h2>${recent.map((a) => {
+      const id = (a.key || "").startsWith("event:") ? a.key.slice(6) : null;
+      const inner = `<div class="main"><div class="t">${esc(a.title)}</div><div class="s">${esc(a.body)} · ${ago(a.at)}</div></div>`;
+      return id && evIds.has(id) ? `<div class="row ev" data-ev="${esc(id)}" role="button" tabindex="0">${inner}<span class="chev" aria-hidden="true">›</span></div>`
+        : `<a class="row" href="${esc(a.url)}" target="_blank" rel="noopener">${inner}</a>`;
+    }).join("")}</section>`;
   }
-  if (vids.length) h += `<div class="section-title">새 영상</div><div class="hscroll">${vids.map((v) => vcard(v, true)).join("")}</div>`;
-  if (ongoing.length) h += `<div class="section-title">진행 중 · 팝업·콜라보·투표</div><section class="card">${ongoing.map(eventRow).join("")}</section>`;
+  if (vids.length) h += `<div class="section-title">새 영상 ${more("videos")}</div><div class="hscroll">${vids.map((v) => vcard(v, true)).join("")}</div>`;
+  if (now_on.length) h += `<div class="section-title">진행 중 · 팝업·콜라보·투표 ${more("schedule", "지난 것까지")}</div><section class="card">${now_on.map(eventRow).join("")}</section>`;
   if (upcoming.length || ann.some((a) => a.days)) {
-    h += `<div class="section-title">다가오는 일정</div><section class="card">
+    h += `<div class="section-title">다가오는 일정 ${more("schedule", "달력")}</div><section class="card">
       ${upcoming.map(eventRow).join("")}
       ${ann.filter((a) => a.days).slice(0, 5).map((a) => `<div class="row"><div class="main"><span class="tag alt">D-${a.days}</span> ${esc(a.title)} <span class="s">${md(a.date)}</span></div></div>`).join("")}</section>`;
   }
-  if (news.length) h += `<div class="section-title">최신 뉴스</div><section class="card">${news.map((a) => `<a class="row" href="${esc(a.link)}" target="_blank" rel="noopener"><div class="main"><div class="t">${esc(a.title)}</div><div class="s">${esc(a.publisher)} · ${ago(a.published_at)}</div></div></a>`).join("")}</section>`;
+  if (news.length) h += `<div class="section-title">최신 뉴스 <small>같은 소식은 묶어서</small></div><section class="card">${news.map(newsGroupRow).join("")}</section>`;
   return h;
 }
 
@@ -255,14 +333,27 @@ function viewSchedule() {
   }
   const dayEvents = on(ui.calDay);
   const dayAnn = ann.filter((a) => a.date === ui.calDay);
-  const upcoming = evs.filter((e) => (e.end_date || e.date) >= t).sort((a, b) => a.date.localeCompare(b.date));
-  let h = staleBanner(["events"]);
+  const upcoming = evs.filter((e) => (e.end_date || e.date) >= t && e.type !== "ad").sort((a, b) => a.date.localeCompare(b.date));
+  const SHOP = ["popup", "collab", "goods"];
+  const shopNow = ongoing(evs, t, SHOP);
+  const shopPast = evs.filter((e) => SHOP.includes(e.type) && !shopNow.includes(e) && e.date <= t).sort(byDateDesc);
+  const ads = evs.filter((e) => e.type === "ad").sort(byDateDesc);
+  const adsNow = ads.filter((e) => (e.end_date ? e.end_date >= t : daysBetween(e.date, t) <= 180));
+  const others = evs.filter((e) => !SHOP.includes(e.type) && e.type !== "ad" && isPast(e, t)).sort(byDateDesc);
+  let h = staleBanner(["events", "archive"]);
+  h += `<div class="section-title">진행 중 · 팝업·콜라보·굿즈</div><section class="card">
+    ${shopNow.length ? shopNow.map(eventRow).join("") : `<div class="empty">지금 진행 중인 팝업·콜라보가 없어요</div>`}
+    ${pastToggle(shopPast, "지난 팝업·콜라보·굿즈")}</section>`;
+  h += `<div class="section-title">광고 모델 · 구매 혜택</div><section class="card">
+    ${adsNow.length ? adsNow.map(eventRow).join("") : `<div class="empty">최근 광고 소식이 없어요</div>`}
+    ${pastToggle(ads.filter((e) => !adsNow.includes(e)), "지난 광고")}</section>`;
   h += `<section class="card"><div class="cal-head"><button data-cal="-1" aria-label="이전 달">‹</button><b>${y}년 ${m}월</b><button data-cal="1" aria-label="다음 달">›</button></div>
     <div class="cal">${"일월화수목금토".split("").map((d) => `<div class="dow">${d}</div>`).join("")}${cells}</div></section>`;
   h += `<section class="card"><h2>${md(ui.calDay)}(${dow(ui.calDay)})</h2>
     ${dayAnn.map((a) => `<div class="row"><div class="main">🎂 ${esc(a.title)}</div></div>`).join("")}
     ${dayEvents.length ? dayEvents.map(eventRow).join("") : dayAnn.length ? "" : `<div class="empty">이 날의 일정이 없어요</div>`}</section>`;
-  h += `<div class="section-title">앞으로의 일정 (확인된 것만)</div><section class="card">${upcoming.length ? upcoming.map(eventRow).join("") : `<div class="empty">예정된 일정이 없어요</div>`}</section>`;
+  h += `<div class="section-title">앞으로의 일정 (확인된 것만)</div><section class="card">${upcoming.length ? upcoming.map(eventRow).join("") : `<div class="empty">예정된 일정이 없어요</div>`}
+    ${pastToggle(others, "지난 방송·행사·수상")}</section>`;
   h += `<p class="note">출처가 공식이거나 서로 다른 언론사 2곳 이상에서 확인된 정보만 보여드려요.</p>`;
   return h;
 }
@@ -302,6 +393,8 @@ function render() {
 
 // ---------- events ----------
 document.addEventListener("click", (ev) => {
+  const row = ev.target.closest("[data-ev]");
+  if (row && !ev.target.closest("a, button")) { openEvent(row.dataset.ev); return; }
   const b = ev.target.closest("button, a");
   if (!b) return;
   const ds = b.dataset;
@@ -316,7 +409,20 @@ document.addEventListener("click", (ev) => {
   } else if (ds.day) { ui.calDay = ds.day; if (ds.day.slice(0, 7) !== ui.calMonth) ui.calMonth = ds.day.slice(0, 7); render(); }
   else if (ds.atype) { ui.albumType = ds.atype; render(); }
   else if (ds.album) albumDetail(ds.album);
+  else if (ds.gotoDay) {
+    ui.calDay = ds.gotoDay; ui.calMonth = ds.gotoDay.slice(0, 7);
+    $("#detail").close();
+    if (location.hash === "#schedule") { render(); window.scrollTo(0, 0); } else location.hash = "#schedule";
+  } else if (ds.gotoMember) {
+    ui.member = ds.gotoMember; store("member", ui.member);
+    $("#detail").close(); render(); window.scrollTo(0, 0);
+  }
 });
+document.addEventListener("keydown", (ev) => {
+  const row = ev.target.closest?.("[data-ev]");
+  if (row && (ev.key === "Enter" || ev.key === " ")) { ev.preventDefault(); openEvent(row.dataset.ev); }
+});
+$("#detail").addEventListener("click", (ev) => { if (ev.target === $("#detail")) $("#detail").close(); });
 document.addEventListener("change", (ev) => {
   if (ev.target.id === "vshorts") { ui.vshorts = ev.target.checked; render(); }
 });
@@ -357,6 +463,8 @@ async function savePrefs() {
   if (sub) await api("/api/prefs", { endpoint: sub.endpoint, prefs: prefs() });
 }
 
+const changeHtml = (c) => `<div class="row"><div class="main"><div class="t">${esc(c.title)} <span class="s">${esc(c.date)}</span></div>
+  <ul class="notes">${c.notes.map((n) => `<li>${esc(n)}</li>`).join("")}</ul></div></div>`;
 async function renderSettings() {
   const body = $("#settings-body");
   const supported = "serviceWorker" in navigator && "PushManager" in window && "Notification" in window;
@@ -375,7 +483,7 @@ async function renderSettings() {
     <label class="switch"><span>☀️ 아침 9시 · 오늘의 리센느</span><input type="checkbox" data-pref="digest_morning" ${p.digest_morning ? "checked" : ""}></label>
     <label class="switch"><span>🌙 저녁 9시 · 오늘 있었던 일</span><input type="checkbox" data-pref="digest_evening" ${p.digest_evening ? "checked" : ""}></label></section>`;
   h += `<section class="card"><h2>실시간 알림 <small>원하는 것만</small></h2>
-    ${RT_CATS.map(([k, l]) => `<label class="switch"><span>${l}</span><input type="checkbox" data-rt="${k}" ${p.realtime?.[k] ? "checked" : ""}></label>`).join("")}</section>`;
+    ${RT_CATS.map(([k, l]) => `<label class="switch"><span>${l}</span><input type="checkbox" data-rt="${k}" ${(p.realtime?.[k] ?? RT_DEFAULT_ON.has(k)) ? "checked" : ""}></label>`).join("")}</section>`;
 
   const jobs = D.status?.jobs || {};
   const stale = new Set(staleJobs(Object.keys(jobs)));
@@ -383,6 +491,11 @@ async function renderSettings() {
     ${Object.entries(jobs).map(([k, s]) => `<div><span>${esc(JOB_LABEL[k] || k)}</span><span class="${stale.has(k) ? "warn" : "ok"}">${s.last_success ? ago(s.last_success) : "실패"}</span></div>`).join("")}</div>
     <p class="note">모든 정보는 자동으로 수집돼요. 일정·팝업은 공식 출처 또는 서로 다른 언론사 2곳 이상에서 확인된 것만 보여드려요.</p></section>`;
   const month = Object.keys(D.usage || {}).sort().pop();
+  try {
+    const log = await (await fetch("changelog.json", { cache: "no-cache" })).json();
+    h += `<section class="card"><h2>업데이트 내역</h2>${log.slice(0, 1).map(changeHtml).join("")}
+      ${log.length > 1 ? `<details class="past"><summary>이전 업데이트 ${log.length - 1}개</summary>${log.slice(1).map(changeHtml).join("")}</details>` : ""}</section>`;
+  } catch (e) { /* 내역을 못 받아도 설정은 연다 */ }
   h += `<details><summary>관리자</summary><section class="card">
     ${month ? `<p class="note">이번 달 AI 사용료: $${(D.usage[month].usd || 0).toFixed(2)}</p>` : ""}
     <p class="note">관리자 코드를 입력하고 알림을 켜면 수집기 고장 알림과 수리 요청을 받아요.</p>
