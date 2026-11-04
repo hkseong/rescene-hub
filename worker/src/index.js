@@ -102,6 +102,20 @@ export default {
       return json({ error: String(e && e.message || e) }, 500, cors);
     }
   },
+
+  // GitHub cron이 불안정해서 Cloudflare Cron이 15분마다 collect를 대신 실행시킨다.
+  async scheduled(event, env, ctx) {
+    const r = await fetch(`https://api.github.com/repos/${env.GH_REPO}/actions/workflows/collect.yml/dispatches`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${env.GH_TOKEN}`,
+        Accept: "application/vnd.github+json",
+        "User-Agent": "rescene-hub-worker",
+      },
+      body: JSON.stringify({ ref: "main" }),
+    });
+    if (r.status !== 204) throw new Error(`dispatch failed: ${r.status} ${await r.text()}`);
+  },
 };
 
 // ---------- Kakao i Open Builder (1.5차) ----------

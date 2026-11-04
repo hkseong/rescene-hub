@@ -11,3 +11,7 @@ id = "e40f1d851bf14ef0a2879191d67ae2a5"
 ALLOWED_ORIGIN = "https://hkseong.github.io"
 DATA_BASE = "https://raw.githubusercontent.com/hkseong/rescene-hub/data/data/"
 SITE_URL = "https://hkseong.github.io/rescene-hub/"
+GH_REPO = "hkseong/rescene-hub"
+
+[triggers]
+crons = ["*/15 * * * *"]
