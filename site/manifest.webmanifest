@@ -1,6 +1,6 @@
 {
   "name": "RESCENE HUB",
-  "short_name": "리센느 허브",
+  "short_name": "RESCENE",
   "description": "리센느 활동 정보 자동 모아보기",
   "start_url": "./",
   "scope": "./",
