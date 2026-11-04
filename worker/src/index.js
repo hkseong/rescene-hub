@@ -106,7 +106,22 @@ export default {
 
   // GitHub cron이 불안정해서 Cloudflare Cron이 15분마다 collect를 대신 실행시킨다.
   async scheduled(event, env, ctx) {
-    const r = await fetch(`https://api.github.com/repos/${env.GH_REPO}/actions/workflows/collect.yml/dispatches`, {
+    // GitHub가 잠깐 장애일 때를 대비해 몇 번 다시 시도한다
+    let last = "";
+    for (let i = 0; i < 3; i++) {
+      if (i) await new Promise((ok) => setTimeout(ok, 20000 * i));
+      try {
+        const r = await dispatchCollect(env);
+        if (r.status === 204) return;
+        last = `${r.status} ${await r.text()}`;
+      } catch (e) { last = String(e); }
+    }
+    throw new Error(`dispatch failed: ${last}`);
+  },
+};
+
+function dispatchCollect(env) {
+  return fetch(`https://api.github.com/repos/${env.GH_REPO}/actions/workflows/collect.yml/dispatches`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${env.GH_TOKEN}`,
@@ -115,9 +130,7 @@ export default {
       },
       body: JSON.stringify({ ref: "main" }),
     });
-    if (r.status !== 204) throw new Error(`dispatch failed: ${r.status} ${await r.text()}`);
-  },
-};
+}
 
 // ---------- Kakao i Open Builder (1.5차) ----------
 // 오픈빌더 블록의 스킬 URL을 https://<worker>/kakao/skill 로, 블록 이름(또는 발화)을 아래 키 중 하나로 두면 된다.
