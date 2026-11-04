@@ -58,7 +58,9 @@ jobs:
           git checkout --orphan snapshot
           git add -A data
           git commit -q -m "data snapshot $(date -u +%FT%TZ)"
-          git push -f origin snapshot:data
+          # GitHub가 가끔 500을 돌려줘서 몇 번 다시 시도한다
+          for i in 1 2 3 4; do git push -f origin snapshot:data && exit 0; sleep $((i * 15)); done
+          exit 1
       - name: Alert owner if the runner itself broke
         if: failure()
         env:
