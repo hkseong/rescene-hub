@@ -1,0 +1,59 @@
+{
+ "members": {
+  "원이": {
+   "birthday": "2004-05-25",
+   "sources": [
+    "https://ko.wikipedia.org/wiki/%EB%A6%AC%EC%84%BC%EB%8A%90",
+    "https://love.asdn.kr/815",
+    "https://soridata.com/ko/artists/RESCENE.html"
+   ],
+   "verified_at": "2026-11-03T22:40:35+09:00"
+  },
+  "리브": {
+   "birthday": "2006-10-11",
+   "sources": [
+    "https://ko.wikipedia.org/wiki/%EB%A6%AC%EB%B8%8C_(%EA%B0%80%EC%88%98)",
+    "https://love.asdn.kr/816",
+    "https://soridata.com/ko/artists/RESCENE.html",
+    "https://kcultureradar.com/ko/artists/liv/"
+   ],
+   "verified_at": "2026-11-03T22:40:35+09:00"
+  },
+  "미나미": {
+   "birthday": "2006-11-29",
+   "sources": [
+    "https://ko.wikipedia.org/wiki/%EB%AF%B8%EB%82%98%EB%AF%B8_(%EC%9D%BC%EB%B3%B8%EC%9D%98_%EA%B0%80%EC%88%98)",
+    "https://namu.wiki/w/%EB%AF%B8%EB%82%98%EB%AF%B8(RESCENE)",
+    "https://love.asdn.kr/814"
+   ],
+   "verified_at": "2026-11-03T22:40:35+09:00"
+  },
+  "메이": {
+   "birthday": "2008-08-19",
+   "sources": [
+    "https://ko.wikipedia.org/wiki/%EB%A9%94%EC%9D%B4_(2008%EB%85%84%EC%83%9D_%EA%B0%80%EC%88%98)",
+    "https://www.instagram.com/may_rescene/",
+    "https://soridata.com/ko/artists/RESCENE.html"
+   ],
+   "verified_at": "2026-11-03T22:40:35+09:00"
+  },
+  "제나": {
+   "birthday": "2008-11-27",
+   "sources": [
+    "https://namu.wiki/w/%EC%A0%9C%EB%82%98(RESCENE)/%EC%B2%AD%EC%B6%98%EC%8A%A4%ED%83%80",
+    "https://love.asdn.kr/819",
+    "https://kcultureradar.com/ko/artists/zena/"
+   ],
+   "verified_at": "2026-11-03T22:40:35+09:00"
+  }
+ },
+ "checked_at": "2026-11-07T23:01:05+09:00",
+ "debut": {
+  "date": "2024-03-26",
+  "title": "데뷔 (싱글 'Re:Scene')",
+  "sources": [
+   "https://sports.khan.co.kr/article/202402181001003",
+   "https://www.news1.kr/amp/entertain/music/5328092"
+  ]
+ }
+}

@@ -1,0 +1,842 @@
+{
+ "albums": [
+  {
+   "id": "15082293",
+   "title": "PULSE",
+   "type": "EP",
+   "date": "2026-11-03",
+   "art": "https://cdnimg.melon.co.kr/cm2/album/images/150/82/293/15082293_20261026170443_500.jpg",
+   "url": "https://www.melon.com/album/detail.htm?albumId=15082293",
+   "tracks": [
+    {
+     "song_id": "603712833",
+     "title": "Finest Thing",
+     "is_title": false
+    },
+    {
+     "song_id": "603712834",
+     "title": "With",
+     "is_title": true
+    },
+    {
+     "song_id": "603712835",
+     "title": "백화요란 (Inside Out)",
+     "is_title": false
+    },
+    {
+     "song_id": "603712836",
+     "title": "MEME",
+     "is_title": false
+    },
+    {
+     "song_id": "603712837",
+     "title": "Dragon",
+     "is_title": false
+    }
+   ],
+   "genre": "댄스",
+   "label": "더뮤즈엔터테인먼트"
+  },
+  {
+   "id": "13788545",
+   "title": "Pretty Girl - Special Single",
+   "type": "싱글",
+   "date": "2026-07-08",
+   "art": "https://cdnimg.melon.co.kr/cm2/album/images/137/88/545/13788545_20260707111659_500.jpg",
+   "url": "https://www.melon.com/album/detail.htm?albumId=13788545",
+   "tracks": [
+    {
+     "song_id": "602450078",
+     "title": "Pretty Girl",
+     "is_title": true
+    }
+   ],
+   "genre": "댄스",
+   "label": "더뮤즈엔터테인먼트"
+  },
+  {
+   "id": "13312413",
+   "title": "Runaway",
+   "type": "싱글",
+   "date": "2026-04-08",
+   "art": "https://cdnimg.melon.co.kr/cm2/album/images/133/12/413/13312413_20260406143448_500.jpg",
+   "url": "https://www.melon.com/album/detail.htm?albumId=13312413",
+   "tracks": [
+    {
+     "song_id": "601719493",
+     "title": "Runaway",
+     "is_title": true
+    }
+   ],
+   "genre": "댄스",
+   "label": "더뮤즈엔터테인먼트"
+  },
+  {
+   "id": "12911987",
+   "title": "Busy Boy (Galantis Remix)",
+   "type": "싱글",
+   "date": "2026-03-12",
+   "art": "https://cdnimg.melon.co.kr/cm2/album/images/129/11/987/12911987_20260310181847_500.jpg",
+   "url": "https://www.melon.com/album/detail.htm?albumId=12911987",
+   "tracks": [
+    {
+     "song_id": "601492012",
+     "title": "Busy Boy (Galantis Remix)",
+     "is_title": true
+    }
+   ],
+   "genre": "일렉트로니카",
+   "label": "Aria, PIG Entertainment"
+  },
+  {
+   "id": "12913719",
+   "title": "Music from THE SPECIALS",
+   "type": "정규",
+   "date": "2026-02-27",
+   "art": "https://cdnimg.melon.co.kr/cm2/album/images/129/13/719/12913719_20260311112740_500.jpg",
+   "url": "https://www.melon.com/album/detail.htm?albumId=12913719",
+   "tracks": [
+    {
+     "song_id": "601497914",
+     "title": "ふられ気分で ROCK'N' ROLL (Myun Cover)",
+     "is_title": true
+    },
+    {
+     "song_id": "601497915",
+     "title": "Higher",
+     "is_title": false
+    },
+    {
+     "song_id": "601497916",
+     "title": "Pinky Lady",
+     "is_title": false
+    }
+   ],
+   "genre": "국외영화, J-POP",
+   "label": "HIAN"
+  },
+  {
+   "id": "12883155",
+   "title": "[RESCENE X ???]",
+   "type": "싱글",
+   "date": "2026-02-27",
+   "art": "https://cdnimg.melon.co.kr/cm2/album/images/128/83/155/12883155_20260225151920_500.jpg",
+   "url": "https://www.melon.com/album/detail.htm?albumId=12883155",
+   "tracks": [
+    {
+     "song_id": "601395707",
+     "title": "Busy Boy",
+     "is_title": true
+    },
+    {
+     "song_id": "601395708",
+     "title": "Busy Boy (Inst.)",
+     "is_title": false
+    }
+   ],
+   "genre": "댄스",
+   "label": "Aria, PIG Entertainment"
+  },
+  {
+   "id": "12458571",
+   "title": "Pinball (Japanese Ver.)",
+   "type": "싱글",
+   "date": "2026-01-21",
+   "art": "https://cdnimg.melon.co.kr/cm2/album/images/124/58/571/12458571_20251226164101_500.jpg",
+   "url": "https://www.melon.com/album/detail.htm?albumId=12458571",
+   "tracks": [
+    {
+     "song_id": "600792094",
+     "title": "Pinball (Japanese Ver.)",
+     "is_title": true
+    }
+   ],
+   "genre": "J-POP",
+   "label": "THE MUZE ENTERTAINMENT"
+  },
+  {
+   "id": "12196394",
+   "title": "lip bomb",
+   "type": "EP",
+   "date": "2025-11-25",
+   "art": "https://cdnimg.melon.co.kr/cm2/album/images/121/96/394/12196394_20251125142736_500.jpg",
+   "url": "https://www.melon.com/album/detail.htm?albumId=12196394",
+   "tracks": [
+    {
+     "song_id": "600442746",
+     "title": "Heart Drop",
+     "is_title": true
+    },
+    {
+     "song_id": "600568257",
+     "title": "Bloom",
+     "is_title": true
+    },
+    {
+     "song_id": "600568258",
+     "title": "Love Echo",
+     "is_title": false
+    },
+    {
+     "song_id": "600568259",
+     "title": "Hello XO",
+     "is_title": false
+    },
+    {
+     "song_id": "600568260",
+     "title": "MVP",
+     "is_title": false
+    }
+   ],
+   "genre": "댄스, 발라드, R&B/Soul",
+   "label": "더뮤즈엔터테인먼트"
+  },
+  {
+   "id": "12118697",
+   "title": "고백주파수 (첫사랑 엔딩 X RESCENE (리센느))",
+   "type": "싱글",
+   "date": "2025-09-17",
+   "art": "https://cdnimg.melon.co.kr/cm2/album/images/121/18/697/12118697_20250916162456_500.jpg",
+   "url": "https://www.melon.com/album/detail.htm?albumId=12118697",
+   "tracks": [
+    {
+     "song_id": "600111013",
+     "title": "고백주파수",
+     "is_title": true
+    },
+    {
+     "song_id": "600111014",
+     "title": "고백주파수 (Inst.)",
+     "is_title": false
+    }
+   ],
+   "genre": "R&B/Soul",
+   "label": "TOON STUDIO"
+  },
+  {
+   "id": "11887268",
+   "title": "남주의 첫날밤을 가져버렸다 OST Special",
+   "type": "OST",
+   "date": "2025-07-10",
+   "art": "https://cdnimg.melon.co.kr/cm2/album/images/118/87/268/11887268_20250709155636_500.jpg",
+   "url": "https://www.melon.com/album/detail.htm?albumId=11887268",
+   "tracks": [
+    {
+     "song_id": "39284598",
+     "title": "밤밤밤",
+     "is_title": true
+    },
+    {
+     "song_id": "39284599",
+     "title": "우리 시작할까요",
+     "is_title": false
+    },
+    {
+     "song_id": "39284600",
+     "title": "그대가 나를 바라보면",
+     "is_title": false
+    },
+    {
+     "song_id": "39284601",
+     "title": "언제나 그대라서",
+     "is_title": false
+    },
+    {
+     "song_id": "39284602",
+     "title": "남주의 첫날밤을 가져버렸다",
+     "is_title": false
+    },
+    {
+     "song_id": "39284603",
+     "title": "최종 간택",
+     "is_title": false
+    },
+    {
+     "song_id": "39284604",
+     "title": "벗",
+     "is_title": false
+    },
+    {
+     "song_id": "39284605",
+     "title": "캔디같은 그녀",
+     "is_title": false
+    },
+    {
+     "song_id": "39284606",
+     "title": "주인공은 죽지 않아",
+     "is_title": false
+    },
+    {
+     "song_id": "39284607",
+     "title": "선남선녀",
+     "is_title": false
+    },
+    {
+     "song_id": "39284608",
+     "title": "내가 그대를",
+     "is_title": false
+    },
+    {
+     "song_id": "39284609",
+     "title": "엉뚱한 매력",
+     "is_title": false
+    },
+    {
+     "song_id": "39284610",
+     "title": "라스트 미션",
+     "is_title": false
+    },
+    {
+     "song_id": "39284612",
+     "title": "Server Down",
+     "is_title": false
+    },
+    {
+     "song_id": "39284613",
+     "title": "납신다",
+     "is_title": false
+    },
+    {
+     "song_id": "39284614",
+     "title": "은애의 실체",
+     "is_title": false
+    },
+    {
+     "song_id": "39284615",
+     "title": "Assassin",
+     "is_title": false
+    },
+    {
+     "song_id": "39284616",
+     "title": "그리운 그리운",
+     "is_title": false
+    },
+    {
+     "song_id": "39284617",
+     "title": "지켜야 할 것",
+     "is_title": false
+    },
+    {
+     "song_id": "39284618",
+     "title": "작전 실패",
+     "is_title": false
+    },
+    {
+     "song_id": "39284619",
+     "title": "흑사단의 수괴",
+     "is_title": false
+    },
+    {
+     "song_id": "39284620",
+     "title": "Search",
+     "is_title": false
+    },
+    {
+     "song_id": "39284621",
+     "title": "Childhood",
+     "is_title": false
+    },
+    {
+     "song_id": "39284622",
+     "title": "얼쑤절쑤",
+     "is_title": false
+    },
+    {
+     "song_id": "39284623",
+     "title": "도화선",
+     "is_title": false
+    },
+    {
+     "song_id": "39284624",
+     "title": "어둠속의 추격",
+     "is_title": false
+    },
+    {
+     "song_id": "39284625",
+     "title": "경합",
+     "is_title": false
+    },
+    {
+     "song_id": "39284626",
+     "title": "달려갈게",
+     "is_title": false
+    },
+    {
+     "song_id": "39284627",
+     "title": "궁궐의 하루",
+     "is_title": false
+    },
+    {
+     "song_id": "39284628",
+     "title": "금수저 막내딸",
+     "is_title": false
+    },
+    {
+     "song_id": "39284629",
+     "title": "간파",
+     "is_title": false
+    },
+    {
+     "song_id": "39284630",
+     "title": "귀염둥이 등장",
+     "is_title": false
+    },
+    {
+     "song_id": "39284631",
+     "title": "돌아온 이번",
+     "is_title": false
+    },
+    {
+     "song_id": "39284632",
+     "title": "놓침",
+     "is_title": false
+    },
+    {
+     "song_id": "39284633",
+     "title": "멸문지화",
+     "is_title": false
+    },
+    {
+     "song_id": "39284634",
+     "title": "폭탄주",
+     "is_title": false
+    },
+    {
+     "song_id": "39284635",
+     "title": "그리워하다",
+     "is_title": false
+    },
+    {
+     "song_id": "39284636",
+     "title": "미친 사람이에요",
+     "is_title": false
+    },
+    {
+     "song_id": "39284637",
+     "title": "타임머신",
+     "is_title": false
+    },
+    {
+     "song_id": "39284638",
+     "title": "아름다운 날들",
+     "is_title": false
+    },
+    {
+     "song_id": "39284639",
+     "title": "운명 판타지",
+     "is_title": false
+    },
+    {
+     "song_id": "39284640",
+     "title": "조주의 기술",
+     "is_title": false
+    },
+    {
+     "song_id": "39284641",
+     "title": "대면",
+     "is_title": false
+    },
+    {
+     "song_id": "39284642",
+     "title": "소설 속 왈츠",
+     "is_title": false
+    },
+    {
+     "song_id": "39284643",
+     "title": "계략",
+     "is_title": false
+    },
+    {
+     "song_id": "39284644",
+     "title": "기강을 잡으셔요",
+     "is_title": false
+    },
+    {
+     "song_id": "39284645",
+     "title": "악녀",
+     "is_title": false
+    },
+    {
+     "song_id": "39284646",
+     "title": "기다리다",
+     "is_title": false
+    },
+    {
+     "song_id": "39284647",
+     "title": "Becoming Her",
+     "is_title": false
+    },
+    {
+     "song_id": "39284648",
+     "title": "음모",
+     "is_title": false
+    },
+    {
+     "song_id": "39284649",
+     "title": "꽃의 왈츠",
+     "is_title": false
+    },
+    {
+     "song_id": "39284650",
+     "title": "흑임자묵",
+     "is_title": false
+    },
+    {
+     "song_id": "39284651",
+     "title": "저잣거리",
+     "is_title": false
+    },
+    {
+     "song_id": "39284652",
+     "title": "시간의 틈에서",
+     "is_title": false
+    },
+    {
+     "song_id": "39284653",
+     "title": "의심",
+     "is_title": false
+    },
+    {
+     "song_id": "39284654",
+     "title": "졸지에 백수",
+     "is_title": false
+    },
+    {
+     "song_id": "39284655",
+     "title": "The First Night",
+     "is_title": false
+    },
+    {
+     "song_id": "39284656",
+     "title": "번의 눈물",
+     "is_title": false
+    },
+    {
+     "song_id": "39284657",
+     "title": "귀환",
+     "is_title": false
+    },
+    {
+     "song_id": "39284658",
+     "title": "떼쟁이",
+     "is_title": false
+    },
+    {
+     "song_id": "39284659",
+     "title": "만세!",
+     "is_title": false
+    },
+    {
+     "song_id": "39284660",
+     "title": "한숨",
+     "is_title": false
+    },
+    {
+     "song_id": "39284661",
+     "title": "이규의 등장",
+     "is_title": false
+    },
+    {
+     "song_id": "39284662",
+     "title": "진수성찬",
+     "is_title": false
+    },
+    {
+     "song_id": "39284663",
+     "title": "수상한 움직임",
+     "is_title": false
+    },
+    {
+     "song_id": "39284664",
+     "title": "꿈보다 가까운",
+     "is_title": false
+    },
+    {
+     "song_id": "39284665",
+     "title": "선택의 기로",
+     "is_title": false
+    },
+    {
+     "song_id": "39284666",
+     "title": "사랑에 빠진 순간",
+     "is_title": false
+    },
+    {
+     "song_id": "39284667",
+     "title": "꽁냥꽁냥",
+     "is_title": false
+    },
+    {
+     "song_id": "39284668",
+     "title": "인왕산 호랑이",
+     "is_title": false
+    },
+    {
+     "song_id": "39284669",
+     "title": "레드카펫",
+     "is_title": false
+    },
+    {
+     "song_id": "39284670",
+     "title": "Magic Begins Here",
+     "is_title": false
+    },
+    {
+     "song_id": "39284671",
+     "title": "이규",
+     "is_title": false
+    }
+   ],
+   "genre": "국내드라마, 발라드, 댄스",
+   "label": "KBS미디어, 모스트콘텐츠"
+  },
+  {
+   "id": "11885178",
+   "title": "Dearest (Sped Up Version)",
+   "type": "싱글",
+   "date": "2025-07-09",
+   "art": "https://cdnimg.melon.co.kr/cm2/album/images/118/85/178/11885178_20250708161041_500.jpg",
+   "url": "https://www.melon.com/album/detail.htm?albumId=11885178",
+   "tracks": [
+    {
+     "song_id": "39275113",
+     "title": "Deja Vu (Sped Up Version)",
+     "is_title": true
+    },
+    {
+     "song_id": "39275114",
+     "title": "Mood (Sped Up Version)",
+     "is_title": false
+    }
+   ],
+   "genre": "댄스, R&B/Soul",
+   "label": "더뮤즈엔터테인먼트"
+  },
+  {
+   "id": "11875116",
+   "title": "Dearest",
+   "type": "싱글",
+   "date": "2025-07-02",
+   "art": "https://cdnimg.melon.co.kr/cm2/album/images/118/75/116/11875116_20250701165641_500.jpg",
+   "url": "https://www.melon.com/album/detail.htm?albumId=11875116",
+   "tracks": [
+    {
+     "song_id": "39231685",
+     "title": "Deja Vu",
+     "is_title": true
+    },
+    {
+     "song_id": "39231687",
+     "title": "Mood",
+     "is_title": false
+    }
+   ],
+   "genre": "댄스, R&B/Soul",
+   "label": "더뮤즈엔터테인먼트"
+  },
+  {
+   "id": "11853182",
+   "title": "남주의 첫날밤을 가져버렸다 OST Part. 1",
+   "type": "OST",
+   "date": "2025-06-12",
+   "art": "https://cdnimg.melon.co.kr/cm2/album/images/118/53/182/11853182_20250611150755_500.jpg",
+   "url": "https://www.melon.com/album/detail.htm?albumId=11853182",
+   "tracks": [
+    {
+     "song_id": "39139550",
+     "title": "밤밤밤",
+     "is_title": true
+    },
+    {
+     "song_id": "39139551",
+     "title": "밤밤밤 (Inst.)",
+     "is_title": false
+    }
+   ],
+   "genre": "댄스, 국내드라마",
+   "label": "KBS미디어, 모스트콘텐츠"
+  },
+  {
+   "id": "11715686",
+   "title": "Glow Up (English Version)",
+   "type": "싱글",
+   "date": "2025-02-17",
+   "art": "https://cdnimg.melon.co.kr/cm2/album/images/117/15/686/11715686_20250214151013_500.jpg",
+   "url": "https://www.melon.com/album/detail.htm?albumId=11715686",
+   "tracks": [
+    {
+     "song_id": "38560195",
+     "title": "Glow Up (English Version)",
+     "is_title": true
+    }
+   ],
+   "genre": "댄스",
+   "label": "더뮤즈엔터테인먼트"
+  },
+  {
+   "id": "11707015",
+   "title": "Glow Up",
+   "type": "EP",
+   "date": "2025-02-05",
+   "art": "https://cdnimg.melon.co.kr/cm2/album/images/117/07/015/11707015_20250204161952_500.jpg",
+   "url": "https://www.melon.com/album/detail.htm?albumId=11707015",
+   "tracks": [
+    {
+     "song_id": "38522795",
+     "title": "CRASH",
+     "is_title": false
+    },
+    {
+     "song_id": "38522796",
+     "title": "Glow Up",
+     "is_title": true
+    },
+    {
+     "song_id": "38522797",
+     "title": "Going on",
+     "is_title": false
+    },
+    {
+     "song_id": "38522798",
+     "title": "In my lotion",
+     "is_title": false
+    },
+    {
+     "song_id": "38522799",
+     "title": "Cotton Candy",
+     "is_title": false
+    }
+   ],
+   "genre": "댄스, R&B/Soul",
+   "label": "더뮤즈엔터테인먼트"
+  },
+  {
+   "id": "11657100",
+   "title": "UhUh (Japanese Version)",
+   "type": "싱글",
+   "date": "2024-12-04",
+   "art": "https://cdnimg.melon.co.kr/cm2/album/images/116/57/100/11657100_20241203103151_500.jpg",
+   "url": "https://www.melon.com/album/detail.htm?albumId=11657100",
+   "tracks": [
+    {
+     "song_id": "38286891",
+     "title": "UhUh (Japanese Version)",
+     "is_title": true
+    }
+   ],
+   "genre": "J-POP",
+   "label": "TheMuze Entertainment"
+  },
+  {
+   "id": "11575849",
+   "title": "SCENEDROME",
+   "type": "EP",
+   "date": "2024-08-27",
+   "art": "https://cdnimg.melon.co.kr/cm2/album/images/115/75/849/11575849_20240826152240_500.jpg",
+   "url": "https://www.melon.com/album/detail.htm?albumId=11575849",
+   "tracks": [
+    {
+     "song_id": "37928380",
+     "title": "Lucky you",
+     "is_title": false
+    },
+    {
+     "song_id": "37928381",
+     "title": "LOVE ATTACK",
+     "is_title": true
+    },
+    {
+     "song_id": "37928382",
+     "title": "New World",
+     "is_title": false
+    },
+    {
+     "song_id": "37928383",
+     "title": "Pinball",
+     "is_title": true
+    }
+   ],
+   "genre": "댄스",
+   "label": "더뮤즈엔터테인먼트"
+  },
+  {
+   "id": "11569373",
+   "title": "YoYo (Japanese Version)",
+   "type": "싱글",
+   "date": "2024-08-16",
+   "art": "https://cdnimg.melon.co.kr/cm2/album/images/115/69/373/11569373_20240819105413_500.jpg",
+   "url": "https://www.melon.com/album/detail.htm?albumId=11569373",
+   "tracks": [
+    {
+     "song_id": "37903042",
+     "title": "YoYo (Japanese Version)",
+     "is_title": true
+    }
+   ],
+   "genre": "J-POP",
+   "label": "The Muze Entertainment"
+  },
+  {
+   "id": "11521376",
+   "title": "Counting Star (더 매직스타 X RESCENE (리센느))",
+   "type": "싱글",
+   "date": "2024-06-26",
+   "art": "https://cdnimg.melon.co.kr/cm2/album/images/115/21/376/11521376_20240625161225_500.jpg",
+   "url": "https://www.melon.com/album/detail.htm?albumId=11521376",
+   "tracks": [
+    {
+     "song_id": "37674087",
+     "title": "Counting Star",
+     "is_title": true
+    },
+    {
+     "song_id": "37674088",
+     "title": "Counting Star (Inst.)",
+     "is_title": false
+    }
+   ],
+   "genre": "R&B/Soul",
+   "label": "Kanverse, SanKan"
+  },
+  {
+   "id": "11450232",
+   "title": "Re:Scene",
+   "type": "싱글",
+   "date": "2024-03-26",
+   "art": "https://cdnimg.melon.co.kr/cm2/album/images/114/50/232/11450232_20240325152500_500.jpg",
+   "url": "https://www.melon.com/album/detail.htm?albumId=11450232",
+   "tracks": [
+    {
+     "song_id": "37348528",
+     "title": "YoYo",
+     "is_title": false
+    },
+    {
+     "song_id": "37348529",
+     "title": "UhUh",
+     "is_title": true
+    }
+   ],
+   "genre": "댄스",
+   "label": "더뮤즈엔터테인먼트"
+  },
+  {
+   "id": "11430883",
+   "title": "YoYo",
+   "type": "싱글",
+   "date": "2024-02-29",
+   "art": "https://cdnimg.melon.co.kr/cm2/album/images/114/30/883/11430883_20240228160647_500.jpg",
+   "url": "https://www.melon.com/album/detail.htm?albumId=11430883",
+   "tracks": [
+    {
+     "song_id": "37264967",
+     "title": "YoYo",
+     "is_title": true
+    }
+   ],
+   "genre": "댄스",
+   "label": "더뮤즈엔터테인먼트"
+  }
+ ],
+ "updated": "2026-11-07T23:00:58+09:00"
+}
