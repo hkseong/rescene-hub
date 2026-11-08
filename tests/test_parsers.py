@@ -52,6 +52,13 @@ def test_week_award():
     assert all("song" in c and "artist" in c for c in w["top"])
 
 
+def test_week_award_tallying():
+    # 투표 마감 후 집계 중(월요일 15시 발표 전)에는 후보가 없다 → 오류 아님
+    assert melon.parse_week_award(read("melon_weekaward_closed.html")) is None
+    with pytest.raises(CollectorError):
+        melon.parse_week_award("<html><body></body></html>")
+
+
 def test_rss():
     items = news.parse_rss((FX / "news.xml").read_bytes())
     assert len(items) > 10

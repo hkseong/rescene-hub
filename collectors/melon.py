@@ -206,7 +206,8 @@ def collect_albums() -> list[dict]:
     return alerts
 
 
-def parse_week_award(html: str) -> dict:
+def parse_week_award(html: str) -> dict | None:
+    """None = 투표 마감 후 집계 중(매주 월요일 15시 결과 발표 전까지 후보 목록이 없음)."""
     s = BeautifulSoup(html, "html.parser")
     seen, cands = set(), []
     for el in s.select("[data-vote-rank]"):
@@ -220,6 +221,9 @@ def parse_week_award(html: str) -> dict:
             "artist": el.get("data-artist-nm", ""),
         })
     if not cands:
+        tally = s.select_one(".chart-result-time")
+        if tally and "집계 중" in str(tally):
+            return None
         raise CollectorError("멜론 주간 인기상 후보를 찾지 못했습니다")
     cands.sort(key=lambda c: c["rank"])
     return {
@@ -234,6 +238,8 @@ def collect_vote() -> list[dict]:
     data = load("votes.json", {})
     prev = data.get("melon_week")
     cur = parse_week_award(http_get(WEEK_AWARD_URL).text)
+    if cur is None:  # 집계 중: 직전 데이터 유지
+        return []
     cur["fetched_at"] = iso()
     alerts = []
     if prev is not None:
