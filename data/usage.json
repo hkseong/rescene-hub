@@ -1,0 +1,17 @@
+{
+ "2026-11": {
+  "usd": 5.0953,
+  "calls": 229,
+  "searches": 39,
+  "by_purpose": {
+   "theme": 0.004,
+   "classify_videos": 0.1392,
+   "events": 2.6902,
+   "profile": 0.3806,
+   "news_stories": 0.0716,
+   "archive_popup_goods": 0.9454,
+   "archive_collab_ad": 0.8644
+  },
+  "updated": "2026-11-15T06:31:06+09:00"
+ }
+}

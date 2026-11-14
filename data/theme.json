@@ -1,0 +1,18 @@
+{
+ "album_id": "15082293",
+ "album": "PULSE",
+ "mood": "차가운 콘크리트 속 하얀 천사의 고요",
+ "colors": {
+  "bg": "#F5F4F8",
+  "surface": "#FFFFFF",
+  "text": "#25222E",
+  "muted": "#645F72",
+  "primary": "#6E5F8C",
+  "on_primary": "#FFFFFF",
+  "accent": "#B7A6D6",
+  "grad_from": "#ECE9F3",
+  "grad_to": "#D9D4E6"
+ },
+ "art": "https://cdnimg.melon.co.kr/cm2/album/images/150/82/293/15082293_20261026170443_500.jpg",
+ "updated": "2026-11-03T22:38:24+09:00"
+}

@@ -1,0 +1,68 @@
+{
+ "jobs": {
+  "melon_chart": {
+   "consecutive_failures": 0,
+   "interval_min": 60,
+   "last_run": "2026-11-15T06:01:05+09:00",
+   "last_success": "2026-11-15T06:01:05+09:00",
+   "error": null
+  },
+  "melon_vote": {
+   "consecutive_failures": 0,
+   "interval_min": 60,
+   "last_run": "2026-11-15T06:01:07+09:00",
+   "last_success": "2026-11-15T06:01:07+09:00",
+   "error": null
+  },
+  "melon_albums": {
+   "consecutive_failures": 0,
+   "interval_min": 360,
+   "last_run": "2026-11-15T05:01:05+09:00",
+   "last_success": "2026-11-15T05:01:05+09:00",
+   "error": null
+  },
+  "youtube": {
+   "consecutive_failures": 0,
+   "interval_min": 30,
+   "last_run": "2026-11-15T06:31:02+09:00",
+   "last_success": "2026-11-15T06:31:02+09:00",
+   "error": null
+  },
+  "theme": {
+   "consecutive_failures": 0,
+   "interval_min": 360,
+   "last_run": "2026-11-15T05:01:05+09:00",
+   "last_success": "2026-11-15T05:01:05+09:00",
+   "error": null
+  },
+  "appearances": {
+   "consecutive_failures": 0,
+   "interval_min": 120,
+   "last_run": "2026-11-15T06:31:06+09:00",
+   "last_success": "2026-11-15T06:31:06+09:00",
+   "error": null
+  },
+  "events": {
+   "consecutive_failures": 0,
+   "interval_min": 480,
+   "last_run": "2026-11-15T01:31:29+09:00",
+   "last_success": "2026-11-15T01:31:29+09:00",
+   "error": null
+  },
+  "profile": {
+   "consecutive_failures": 0,
+   "interval_min": 1440,
+   "last_run": "2026-11-14T23:01:09+09:00",
+   "last_success": "2026-11-14T23:01:09+09:00",
+   "error": null
+  },
+  "archive": {
+   "consecutive_failures": 0,
+   "interval_min": 10080,
+   "last_run": "2026-11-11T17:33:53+09:00",
+   "last_success": "2026-11-11T17:33:53+09:00",
+   "error": null
+  }
+ },
+ "updated": "2026-11-15T06:31:06+09:00"
+}

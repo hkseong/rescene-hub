@@ -1,0 +1,42 @@
+{
+ "melon_week": {
+  "top": [
+   {
+    "rank": 1,
+    "song": "Star Trace",
+    "artist": "PLAVE"
+   },
+   {
+    "rank": 2,
+    "song": "With",
+    "artist": "RESCENE (리센느)"
+   },
+   {
+    "rank": 3,
+    "song": "Insomnia",
+    "artist": "RIIZE"
+   },
+   {
+    "rank": 4,
+    "song": "내 이름을 불러줘",
+    "artist": "TWS (투어스)"
+   },
+   {
+    "rank": 5,
+    "song": "I SPY",
+    "artist": "NCT WISH"
+   }
+  ],
+  "total": 20,
+  "rescene": [
+   {
+    "rank": 2,
+    "song": "With",
+    "artist": "RESCENE (리센느)"
+   }
+  ],
+  "url": "https://www.melon.com/melonaward/weekAward.htm",
+  "fetched_at": "2026-11-15T06:01:07+09:00"
+ },
+ "updated": "2026-11-15T06:01:07+09:00"
+}
