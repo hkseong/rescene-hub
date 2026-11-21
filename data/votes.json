@@ -1,0 +1,42 @@
+{
+ "melon_week": {
+  "top": [
+   {
+    "rank": 1,
+    "song": "With",
+    "artist": "RESCENE (리센느)"
+   },
+   {
+    "rank": 2,
+    "song": "Insomnia",
+    "artist": "RIIZE"
+   },
+   {
+    "rank": 3,
+    "song": "REBELS",
+    "artist": "이세계아이돌 (ISEGYE IDOL)"
+   },
+   {
+    "rank": 4,
+    "song": "Boogie Woogie",
+    "artist": "NCT DREAM"
+   },
+   {
+    "rank": 5,
+    "song": "내 이름을 불러줘",
+    "artist": "TWS (투어스)"
+   }
+  ],
+  "total": 20,
+  "rescene": [
+   {
+    "rank": 1,
+    "song": "With",
+    "artist": "RESCENE (리센느)"
+   }
+  ],
+  "url": "https://www.melon.com/melonaward/weekAward.htm",
+  "fetched_at": "2026-11-21T23:00:58+09:00"
+ },
+ "updated": "2026-11-21T23:00:58+09:00"
+}
