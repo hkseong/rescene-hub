@@ -1,0 +1,42 @@
+{
+ "melon_week": {
+  "top": [
+   {
+    "rank": 1,
+    "song": "With",
+    "artist": "RESCENE (리센느)"
+   },
+   {
+    "rank": 2,
+    "song": "REBELS",
+    "artist": "이세계아이돌 (ISEGYE IDOL)"
+   },
+   {
+    "rank": 3,
+    "song": "기립 (GiiiRIP)",
+    "artist": "BIGBANG (빅뱅)"
+   },
+   {
+    "rank": 4,
+    "song": "Angel Bite",
+    "artist": "투모로우바이투게더"
+   },
+   {
+    "rank": 5,
+    "song": "Insomnia",
+    "artist": "RIIZE"
+   }
+  ],
+  "total": 20,
+  "rescene": [
+   {
+    "rank": 1,
+    "song": "With",
+    "artist": "RESCENE (리센느)"
+   }
+  ],
+  "url": "https://www.melon.com/melonaward/weekAward.htm",
+  "fetched_at": "2026-11-29T01:01:00+09:00"
+ },
+ "updated": "2026-11-29T01:01:00+09:00"
+}
